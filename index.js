@@ -24,6 +24,7 @@ async function run(){
         const reviewCollection = database.collection('reviews');
         const orderCollection = database.collection('orders');
         const userCollection = database.collection('users');
+        const blogPostCollection = database.collection('blogPost');
 
         // get all Products api
         app.get('/allProducts',async(req,res) => {
@@ -169,6 +170,20 @@ async function run(){
             }
             const result = await userCollection.updateOne(filter,updateDoc);
             // console.log(result)
+            res.json(result)
+        });
+        // get blogPost
+        app.get('/blogPost/:title',async(req,res) => {
+            const title = req.params.title;
+            // console.log(title)
+            const query = {blogTitle:title}
+            const result = await blogPostCollection.find(query).toArray();
+            res.json(result)
+        })
+        // blogPost
+        app.post('/blogPost',async(req,res) => {
+            const blogPost = req.body;
+            const result = await blogPostCollection.insertOne(blogPost);
             res.json(result)
         })
     }
